@@ -23,13 +23,23 @@ const userSchema=new mongoose.Schema({
         minlength:[6,"Password should be of atleast 6 characters."],
         // select:false  // so that password will not go with model , we don't have to do user.password=undefined
     },
-    role:{
-        type: [{
-            type: String,
-            enum: ['admin', 'user']
-        }],
-        default: ['user']
-    },
+    clothes:[{
+       name:{
+        type:String,
+        required:true,
+       },
+       quantity:{
+        type:Number,
+        required:true
+       },
+        amount:{
+            type:Number,
+            required:true
+        }
+    }],
+    reviews:[{
+        type:String,
+    }],
     forgotPasswordToken:String,
     forgotPasswordExpiry:Date
 },
