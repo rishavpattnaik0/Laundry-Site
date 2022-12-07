@@ -47,6 +47,8 @@ const Login = () => {
             localStorage.setItem('login',true);
             setLoginerr('');
             localStorage.setItem('name',res.data.data.username);
+            localStorage.setItem('userid',res.data.data._id);
+            window.location.reload(false);
             navigate(ROUTES.Home);
         }).catch(err=>{
             console.log(err);
@@ -65,14 +67,14 @@ const Login = () => {
         }).then(res=>{
             console.log(res);
             setSignup1(true);
+            localStorage.setItem('login',true);
             localStorage.setItem('signup',true);
             setSignuperr('');
-            navigate(e);
+            // navigate(e);
         }).catch(err =>{
             console.log(err);
             setSignuperr(err.response.data.message);
         });
-      
     }
       const validate = (values) => {
         const errors = {};
@@ -133,26 +135,26 @@ const Login = () => {
             </div>
             <div class="content">
             <form class="login" id='login12' ref={form} name="loginForm">
-            <input type="text" name="uemail" required autoComplete='off' placeholder="Username" onChange={(e) => shreyas(e)}/>
+            <input type="text" className='a' name="uemail" required autoComplete='off' placeholder="Username" onChange={(e) => shreyas(e)}/>
             <p style={{color:"red"}}>{formErrors1.email}</p>
-            <input type="password" name="upass" id="logPassword" required autoComplete='off' placeholder="Password" onChange={(e) => shreyas(e)}/>
+            <input type="password" className='a' name="upass" id="logPassword" required autoComplete='off' placeholder="Password" onChange={(e) => shreyas(e)}/>
             <p style={{color:"red"}}>{formErrors1.password}</p>
             <p style={{color:"red"}}>{loginerr}</p>
             <div id="check">
-                <input type="checkbox"  id="remember" />
+                <input type="checkbox"   id="remember" />
                 <label for="remember">Remember me</label>
             </div>
             <br/><br/>
-            <input type="submit" value="Login" onClick={(e) => handleSubmit(e)}/>
+            <input type="submit" className='a' value="Login" onClick={(e) => handleSubmit(e)}/>
             <a onClick={shreyas2()}>Forgot Password?</a>
         </form>
 
         <form class="signup" id='signup12' name="signupForm">
-        <input type="email" name="uemail1" id="signEmail" placeholder="Email" onChange={(e) => shreyas1(e)}/>
+        <input type="email" className='a' name="uemail1" id="signEmail" placeholder="Email" onChange={(e) => shreyas1(e)}/>
         <p style={{color:"red"}}>{formErrors.email}</p>
-        <input type="text" name="uname1" id="signName" placeholder="Username" onChange={(e) => shreyas1(e)}/>
+        <input type="text" className='a' name="uname1" id="signName" placeholder="Username" onChange={(e) => shreyas1(e)}/>
         <p style={{color:"red"}}>{formErrors.username}</p>
-        <input type="password" name="upass1" id="signPassword" placeholder="Password" onChange={(e) => shreyas1(e)}/><br />
+        <input type="password" className='a' name="upass1" id="signPassword" placeholder="Password" onChange={(e) => shreyas1(e)}/><br />
         <p style={{color:"red"}}>{formErrors.password}</p>
         <p style={{color:"red"}}>{signuperr}</p>
         <input type="submit" value="SignUp" onClick={(e) => handleSubmit1(e)}/>

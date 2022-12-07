@@ -5,7 +5,6 @@ import User from "../models/User.js"
 import bigPromise from "../middlewares/bigPromise.js"
 import { cookieToken } from "../utils/cookieToken.js";
 import { mailHelper } from "../utils/mailHelper.js";
-import crypto from "crypto";
 export const createUser = bigPromise(async(req,res,next)=>{
     const {username,email,password}=req.body;
     console.log(req.body);
@@ -160,7 +159,6 @@ export const deleteUser = bigPromise(async(req,res,next)=>{
 
 export const addReviews=bigPromise(async(req,res,next)=>{
     const user=req.body;
-    console.log(req.body.feedback);
     const a=await User.findOne({email:user.email});
     if(!a)
     {
@@ -178,11 +176,79 @@ export const addReviews=bigPromise(async(req,res,next)=>{
                 message:"Invalid Password"
             });
         }
-        console.log(user1);
+        const data={
+            reviews:req.body.feedback
+        }
+            const user2= await User.updateOne({_id:a._id},{$push:{reviews:req.body.feedback,rating:req.body.rating}})
+             
+            if(!user2){
+                return res.status(401).json({
+                    success:false,
+                    message:"Updation Failed"
+                });
+            }
         return res.status(200).json({
             success:true,
             message:"Successfully Added Your Review",
-            data:user
-        })  
+            data:a
+        });
     }
+})
+let userid1;
+
+export const addClothes = bigPromise(async(req,res,next)=>{
+    const data={
+        userid:req.body.userid,
+    }
+    userid1=data.userid;
+    const data1={
+        name:req.body.name,
+        quantity:req.body.count,
+        price:req.body.price
+    }
+    const user=await User.findById(data.userid);
+    var b=user.clothes;
+    if(user.clothes.length==0)
+    {
+        const user2=await User.updateOne({_id:user._id},{$push:{clothes:data1}});
+            return res.status(200).json({
+                success:true,
+                message:"Successfully Added Your Products",
+                data:user2
+            }) 
+    }
+    
+    else{
+        let a=0;
+    for(var i=0;i<b.length;i++)
+    {
+        console.log("Hi");
+        console.log(user.clothes[i].name,data1.name);
+        if(user.clothes[i].name===data1.name)
+        {
+            console.log("Hello")
+            a=1;
+            user.clothes[i].quantity+=data1.quantity;
+            await user.save();
+            console.log(user);
+        }
+    }
+        if(a==0){
+            const user2=await User.updateOne({_id:user._id},{$push:{clothes:data1}});
+            return res.status(200).json({
+                success:true,
+                message:"Successfully Added Your Products"
+            })
+        }
+    }
+})
+
+export const getClothes=bigPromise(async(req,res,next)=>{
+    console.log(req.body.a);
+    const user=await User.findById(req.body.a);
+    return res.status(200).json({
+        success:true,
+        message:'Successfully Sent the User',
+        data:user
+    });
 })

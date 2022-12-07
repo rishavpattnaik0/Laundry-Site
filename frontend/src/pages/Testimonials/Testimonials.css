@@ -387,7 +387,11 @@
   box-shadow: 0 2px 10px 0 rgba(0,0,0, 0.1);
   height:133px;
   }
-
+ .ok{
+  margin-left:51rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+ }
   .header-inner {
   /* Make it stick */
   height: var(--header-inner-height);
@@ -435,6 +439,7 @@
   border: 0;
   background-color: transparent;
   padding: 0;
+  margin-top:8%
   }
 
   .header-navigation1 a:hover:after,

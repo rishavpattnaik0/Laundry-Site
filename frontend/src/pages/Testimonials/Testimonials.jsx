@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useState,useEffect } from 'react'
 import Navbar1 from '../../components/Navbar/Navbar'
+import { notification, Space } from 'antd';
+import { Button, Divider  } from 'antd';
+import  { NotificationPlacement } from 'antd/es/notification/interface';
+import { ROUTES } from '../../routes/RouterConfig';
 const Testimonials = ()  => {
     const navigate=useNavigate();
     const initialValues={
@@ -17,21 +21,47 @@ const Testimonials = ()  => {
 
     const [formValues, setFormValues] = useState(initialValues);
     const [formerr,setFormerr]=useState('');
+    const [formerr1,setFormerr1] = useState();
     const [submitted,setIsSubmitted]=useState(false);
     const [stars,setStar]=useState();
+
+    const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (placement: NotificationPlacement) => {
+    api.info({
+      message: 'Success',
+      description:
+        'Thanks For providing review.',
+      placement,
+    });
+  };
+
+  const openNotification1 = (placement: WarningPlacement) => {
+    api.info({
+      message: 'Failure',
+      description:
+        'Please Login First',
+      placement,
+    });
+  };
+
     const shreyas = (e) =>{
     e.preventDefault();
     const {name,value}=e.target;
     setFormValues({...formValues,[name]:value});
     console.log(formValues);
     }
-
     const shreyas1 = (e) =>{
       setStar(e.target.value);
       console.log(stars);
     }
     const handelSubmit = (e) =>{
       e.preventDefault();
+      if(!localStorage.getItem('login'))
+      {
+        openNotification1('top');
+      }
+      else{
       setFormerr(validate(formValues));
       console.log(formerr)
       axios.post("http://localhost:1999/user/add",{
@@ -42,12 +72,20 @@ const Testimonials = ()  => {
       feedback:formValues.feedback
       }).then(res =>{
         console.log(res);
+        setFormerr1('');
         setIsSubmitted(true);
+        navigate(ROUTES.Services);
       }).catch(err =>{
         console.log(err);
-
+        setFormerr1(err.response.data.message);
       });
+      if(!formerr1)
+      {
+        openNotification('top')
+      }
     }
+    }
+    
 
     const validate = (values) => {
       const errors = {};
@@ -63,10 +101,6 @@ const Testimonials = ()  => {
       if (!values.password) {
         errors.password = "Password is required";
       }
-      if(values.password.length<6)
-      {
-        errors.password='Password should be atleast 6 characters'
-      }
       if(!values.feedback)
       {
         errors.feedback='Please fill the feedback sections'
@@ -74,9 +108,14 @@ const Testimonials = ()  => {
       return errors;
     };
 
+    const hitman = (e) =>{
+      navigate(e);
+    }
+
   return (
 
     <div className='main1'>
+    {contextHolder}
     <div class="header-outer">
     <div class="header-inner responsive-wrapper">
     <div class="header-logo">
@@ -118,7 +157,7 @@ const Testimonials = ()  => {
       <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
       <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-      <input name="password" autoComplete='off' class="form-control"  onChange={(e) => shreyas(e)}/> 
+      <input name="password" type="password" autoComplete='off' class="form-control"  onChange={(e) => shreyas(e)}/> 
       </div>
       </div>
       <p style={{color:'red'}}>{formerr.password}</p>  
@@ -154,14 +193,19 @@ const Testimonials = ()  => {
       </div>
       <p style={{color:'red'}}>{formerr.feedback}</p> 
     </div>
-    
+    <p style={{color:'red',marginleft:'2%'}}>{formerr1}</p>
      <button type="submit" class="btn btn-primary submit" onClick={(e) => handelSubmit(e)}>Submit</button>
      </div>
     </form>
-    {
-      
-    }
     </div>
+    {
+      submitted ? <button type='button' className='btn ok btn-primary btn-lg' onClick={(e) => hitman(ROUTES.Reviews)}>
+        View All User Reviews
+      </button>
+      : <button type='button' className='btn ok btn-primary btn-lg' onClick={(e) => hitman(ROUTES.Reviews)}>
+        View All User Reviews
+      </button>
+    }
     </div>
   )
 }

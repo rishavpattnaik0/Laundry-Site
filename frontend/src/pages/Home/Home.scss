@@ -76,6 +76,7 @@
   border: 0;
   background-color: transparent;
   padding: 0;
+  max-width: 100%;
   }
 
   .header-navigation a:hover:after,
@@ -208,7 +209,6 @@
 
   .otherpage,button{
   display: inline-block;
-  padding: 1em 1.5em;
   background-color: #f39e2d;
   color: white;
   text-decoration: none;
@@ -220,7 +220,9 @@
   font-family: cursive;
   cursor: pointer;
   }
-
+  .otherpage{
+  padding: 1em 1.5em;
+  }
   .blank
   .other{
     width: 100%;
@@ -237,7 +239,7 @@
     background-attachment: fixed;
     height: 600px;
     flex-direction:row; 
-      gap: 1.5em;
+      gap: 3.5em;
     max-width: 100%;
   }
   h3{

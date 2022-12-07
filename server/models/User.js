@@ -32,7 +32,7 @@ const userSchema=new mongoose.Schema({
         type:Number,
         required:true
        },
-        amount:{
+        price:{
             type:Number,
             required:true
         }
@@ -40,6 +40,9 @@ const userSchema=new mongoose.Schema({
     reviews:[{
         type:String,
     }],
+    rating:{
+        type:String
+    },
     forgotPasswordToken:String,
     forgotPasswordExpiry:Date
 },

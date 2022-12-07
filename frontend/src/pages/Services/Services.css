@@ -12,6 +12,10 @@
     background-position: center;
     background-attachment: fixed;
 }
+    
+.a{
+    cursor: pointer;
+}
 body{
     max-width: 100%;
 }
@@ -37,6 +41,7 @@ h3{
 
 .card >a{
     margin-bottom: 2em;
+    cursor: pointer;
 }
 
 .img{

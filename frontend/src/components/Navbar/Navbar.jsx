@@ -5,28 +5,34 @@ import { Menu, Space,Spin } from 'antd';
 import {
   Nav,
   NavLink,
-  NavMenu,
-  NavBtn,
-  NavBtnLink,
+  NavMenu
 } from './NavbarElements';
-import Dropdown from 'react-bootstrap/Dropdown';
 import "./Navbar.scss";
 import Login from "../Login/Login";
 import { useNavigate } from 'react-router-dom';
 import { Modal } from 'antd';
 import {ROUTES} from '../../routes/RouterConfig'
-let a,b;
+let b;
 const Navbar = () => {
-  
+
+  const [a,setA]=useState(localStorage.getItem('login'));
+
   const logout = (e) =>{
-    a=false;
+    localStorage.setItem('login',false);
+    setA(false);
     navigate(e);
   }
 
+  const update = () =>{
+        navigate(ROUTES.Details);
+  }
+  const update1 = () =>{
+    navigate(ROUTES.Password);
+  }
+
    b=localStorage.getItem('name');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const navigate=useNavigate();
-   a=localStorage.getItem('login');
+   const [isModalVisible, setIsModalVisible] = useState(false);
+   const navigate=useNavigate();
 
   return (
     <div>
@@ -41,8 +47,11 @@ const Navbar = () => {
           <NavLink to={ROUTES.Testimonials} activeStyle>
             Testimonials
           </NavLink>
-          <NavLink to='' activeStyle>
+          <NavLink to={ROUTES.Contact} activeStyle >
             Contact Us
+          </NavLink>
+          <NavLink className='hi' to={ROUTES.Orders}  activeStyle>
+           🛒 View Cart
           </NavLink>
           {
             !a ? <NavLink  to='' visible={!a} onClick={() => {setIsModalVisible(true)}} activeStyle>
@@ -52,17 +61,17 @@ const Navbar = () => {
           <div>
           <div class="dropdown">
   <button class="btn hiii btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-  <h4>👦</h4>{b}
+  <h4>👦</h4>{b} 
   </button>
   <ul class="dropdown-menu">
-    <li className='li'><a class="dropdown-item" href="#">Update Personal Details</a></li>
-    <li className='li'><a class="dropdown-item" href="#">Update Password</a></li>
-    <li className='li'><a class="dropdown-item" href="#">Logout</a></li>
+    <li className='li'><a class="dropdown-item" onClick={(e) => update(e)}>Update Personal Details</a></li>
+    <li className='li'><a class="dropdown-item" href="#" onClick={(e) => update1(e)}>Update Password</a></li>
+    <li className='li'><a class="dropdown-item" onClick={() => logout(ROUTES.Home)}>Logout</a></li>
   </ul>
 </div>
-          
-          </div>
+     </div>
           }
+
         </NavMenu>
       </Nav>
       <Modal
